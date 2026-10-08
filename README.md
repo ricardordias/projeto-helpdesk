@@ -40,7 +40,7 @@ BASE=http://localhost:3000
 DB_HOST=localhost
 DB_USER=root
 DB_PASSWORD=sua_senha
-DB_DATABASE=probeautydb
+DB_DATABASE=db_helpdesk
 JWT_SECRET=sua_chave_secreta_super_segura
 JWT_EXPIRES_IN=8h
 ```
