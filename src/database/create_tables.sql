@@ -1,3 +1,5 @@
+SET FOREIGN_KEY_CHECKS = 0;
+
 USE db_helpdesk;
 
 -- SOLICITANTES
@@ -61,3 +63,5 @@ CREATE TABLE tb_chamados (
     CONSTRAINT fk_chamados_categoria   FOREIGN KEY (categoria_id)   REFERENCES tb_categorias(id),
     CONSTRAINT fk_chamados_tecnico     FOREIGN KEY (tecnico_id)     REFERENCES tb_tecnicos(id)
 );
+
+SET FOREIGN_KEY_CHECKS = 1;
