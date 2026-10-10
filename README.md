@@ -47,8 +47,8 @@ JWT_EXPIRES_IN=8h
 
 ## Configurar nome e e-mail do git
 ```bash
-git config --global user.name "Teu Nome"
-git config --global user.email "teu_email_do_git"
+git config user.name "Teu Nome"
+git config user.email "teu_email_do_git"
 ```
 
 ## Como vai funcionar
