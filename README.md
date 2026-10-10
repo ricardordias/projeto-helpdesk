@@ -22,8 +22,8 @@ npm install
 3. Crie o banco de dados e importe os scripts de estrutura e seed:
 ```bash
 mysql -u root -p < src/database/create_database.sql
-mysql -u root -p probeautydb < src/database/create_tables.sql
-mysql -u root -p probeautydb < src/database/seed_data.sql
+mysql -u root -p db_helpdesk < src/database/create_tables.sql
+mysql -u root -p db_helpdesk < src/database/seed_data.sql
 ```
 
 ## Variáveis de ambiente
