@@ -1,0 +1,6 @@
+### Listar categorias
+GET http://localhost:3000/categorias
+
+### Listar técnicos
+GET http://localhost:3000/tecnicos
+
