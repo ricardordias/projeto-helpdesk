@@ -1,4 +1,162 @@
 @BASE = http://localhost:3000
 
-### Listar todas os chamados
+@TOKEN_SOLICITANTE = 
+@TOKEN_TECNICO =
+@TOKEN_ADMIN =
+
+### ---------------------------------------------------------------
+### LOGIN — SOLICITANTE (Ana)
+POST {{BASE}}/author/login
+Content-Type: application/json
+
+{
+    "email": "ana.souza@empresa.com",
+    "senha": "senha123"
+}
+
+### LOGIN — SOLICITANTE (Bruno)
+POST {{BASE}}/author/login
+Content-Type: application/json
+
+{
+    "email": "bruno.lima@empresa.com",
+    "senha": "senha123"
+}
+
+### LOGIN — TECNICO (Carlos)
+POST {{BASE}}/author/login
+Content-Type: application/json
+
+{
+    "email": "carlos.pereira@helpdesk.com",
+    "senha": "senha123"
+}
+
+### LOGIN — ADMIN
+POST {{BASE}}/author/login
+Content-Type: application/json
+
+{
+    "email": "admin@helpdesk.com",
+    "senha": "senha123"
+}
+
+### ---------------------------------------------------------------
+### SEM TOKEN — esperado: 401
 GET {{BASE}}/chamados
+
+### TOKEN INVÁLIDO — esperado: 401
+GET {{BASE}}/chamados
+Authorization: Bearer token_invalido
+
+### ---------------------------------------------------------------
+### POST /chamados como SOLICITANTE — esperado: 201
+POST {{BASE}}/chamados
+Content-Type: application/json
+Authorization: Bearer {{TOKEN_SOLICITANTE}}
+
+{
+    "titulo": "Notebook não liga",
+    "descricao": "O notebook do setor não liga desde a manhã.",
+    "prioridade": "ALTA",
+    "categoria_id": 1
+}
+
+### POST /chamados como TECNICO — esperado: 403
+POST {{BASE}}/chamados
+Content-Type: application/json
+Authorization: Bearer {{TOKEN_TECNICO}}
+
+{
+    "titulo": "Teste",
+    "descricao": "Teste",
+    "prioridade": "BAIXA",
+    "categoria_id": 1
+}
+
+### POST /chamados como ADMIN — esperado: 403
+POST {{BASE}}/chamados
+Content-Type: application/json
+Authorization: Bearer {{TOKEN_ADMIN}}
+
+{
+    "titulo": "Teste",
+    "descricao": "Teste",
+    "prioridade": "BAIXA",
+    "categoria_id": 1
+}
+
+### POST com solicitante_id no body — esperado: 400
+POST {{BASE}}/chamados
+Content-Type: application/json
+Authorization: Bearer {{TOKEN_SOLICITANTE}}
+
+{
+    "titulo": "Teste",
+    "descricao": "Teste",
+    "prioridade": "BAIXA",
+    "categoria_id": 1,
+    "solicitante_id": 2
+}
+
+### POST com prioridade inválida — esperado: 400
+POST {{BASE}}/chamados
+Content-Type: application/json
+Authorization: Bearer {{TOKEN_SOLICITANTE}}
+
+{
+    "titulo": "Teste",
+    "descricao": "Teste",
+    "prioridade": "URGENTE",
+    "categoria_id": 1
+}
+
+### POST com categoria inexistente — esperado: 400
+POST {{BASE}}/chamados
+Content-Type: application/json
+Authorization: Bearer {{TOKEN_SOLICITANTE}}
+
+{
+    "titulo": "Teste",
+    "descricao": "Teste",
+    "prioridade": "BAIXA",
+    "categoria_id": 999
+}
+
+### ---------------------------------------------------------------
+### GET /chamados como SOLICITANTE (Ana) — só os dela (ids 1 e 2)
+GET {{BASE}}/chamados
+Authorization: Bearer {{TOKEN_SOLICITANTE}}
+
+### GET /chamados como TECNICO (Carlos) — só os dele (id 1)
+GET {{BASE}}/chamados
+Authorization: Bearer {{TOKEN_TECNICO}}
+
+### GET /chamados como ADMIN — todos (1, 2, 3, 4 + o criado agora)
+GET {{BASE}}/chamados
+Authorization: Bearer {{TOKEN_ADMIN}}
+
+### ---------------------------------------------------------------
+### GET /chamados/1 como ADMIN — esperado: 200 (mostra técnico Carlos)
+GET {{BASE}}/chamados/1
+Authorization: Bearer {{TOKEN_ADMIN}}
+
+### GET /chamados/1 como TECNICO (Carlos, dono) — esperado: 200
+GET {{BASE}}/chamados/1
+Authorization: Bearer {{TOKEN_TECNICO}}
+
+### GET /chamados/2 como SOLICITANTE (Ana, dona) — esperado: 200
+GET {{BASE}}/chamados/2
+Authorization: Bearer {{TOKEN_SOLICITANTE}}
+
+### GET /chamados/3 como SOLICITANTE (Ana, NÃO é dela) — esperado: 404
+GET {{BASE}}/chamados/5
+Authorization: Bearer {{TOKEN_SOLICITANTE}}
+
+### GET /chamados/2 como TECNICO (Carlos, NÃO é dele) — esperado: 404
+GET {{BASE}}/chamados/2
+Authorization: Bearer {{TOKEN_TECNICO}}
+
+### GET /chamados/999 — esperado: 404
+GET {{BASE}}/chamados/999
+Authorization: Bearer {{TOKEN_ADMIN}}

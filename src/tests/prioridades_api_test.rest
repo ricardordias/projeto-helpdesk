@@ -1,4 +1,0 @@
-@BASE = http://localhost:3000
-
-### Listar todas as prioridades
-GET {{BASE}}/prioridades

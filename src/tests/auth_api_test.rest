@@ -1,0 +1,52 @@
+@BASE = http://localhost:3000
+
+### Login ADMIN — esperado: 200 + token
+POST {{BASE}}/author/login
+Content-Type: application/json
+
+{
+    "email": "admin@helpdesk.com",
+    "senha": "senha123"
+}
+
+### Login SOLICITANTE (Ana) — esperado: 200 + token
+POST {{BASE}}/author/login
+Content-Type: application/json
+
+{
+    "email": "ana.souza@empresa.com",
+    "senha": "senha123"
+}
+
+### Login TECNICO (Carlos) — esperado: 200 + token
+POST {{BASE}}/author/login
+Content-Type: application/json
+
+{
+    "email": "carlos.pereira@helpdesk.com",
+    "senha": "senha123"
+}
+
+### Login com senha errada — esperado: 401 (mensagem genérica)
+POST {{BASE}}/author/login
+Content-Type: application/json
+
+{
+    "email": "ana.souza@empresa.com",
+    "senha": "senhaerrada"
+}
+
+### Login com e-mail inexistente — esperado: 401 (mesma mensagem genérica)
+POST {{BASE}}/author/login
+Content-Type: application/json
+
+{
+    "email": "naoexiste@empresa.com",
+    "senha": "senha123"
+}
+
+### Login sem campos — esperado: 400
+POST {{BASE}}/author/login
+Content-Type: application/json
+
+{}

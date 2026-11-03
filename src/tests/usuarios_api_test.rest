@@ -1,4 +1,0 @@
-@BASE = http://localhost:3000
-
-### Listar todas os usuários
-GET {{BASE}}/usuarios

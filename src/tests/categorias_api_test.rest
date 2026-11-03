@@ -1,4 +1,22 @@
 @BASE = http://localhost:3000
+@TOKEN =
 
 ### Listar todas as categorias
 GET {{BASE}}/categorias
+
+### Login para obter token
+POST {{BASE}}/author/login
+Content-Type: application/json
+
+{
+    "email": "ana.souza@empresa.com",
+    "senha": "senha123"
+}
+
+### Com token (SOLICITANTE) — esperado: 200 + 3 categorias
+GET {{BASE}}/categorias
+Authorization: Bearer {{TOKEN}}
+
+### Com token (ADMIN) — esperado: 200 + 3 categorias
+GET {{BASE}}/categorias
+Authorization: Bearer {{TOKEN}}
