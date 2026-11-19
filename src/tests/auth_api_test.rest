@@ -1,4 +1,7 @@
 @BASE = http://localhost:3000
+@TOKEN_ADMIN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibm9tZSI6IkFkbWluaXN0cmFkb3IiLCJlbWFpbCI6ImFkbWluQGhlbHBkZXNrLmNvbSIsInBlcmZpbCI6IkFETUlOIiwic29saWNpdGFudGVfaWQiOm51bGwsInRlY25pY29faWQiOm51bGwsImlhdCI6MTc5NTA5Nzk0NCwiZXhwIjoxNzk1MTI2NzQ0fQ.O1y3BEFKTX6SyRUr4B_fT0V_sWXAxqXj-AsWLlnpmW0
+@TOKEN_SOLICITANTE = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwibm9tZSI6IkFuYSBTb3V6YSIsImVtYWlsIjoiYW5hLnNvdXphQGVtcHJlc2EuY29tIiwicGVyZmlsIjoiU09MSUNJVEFOVEUiLCJzb2xpY2l0YW50ZV9pZCI6MSwidGVjbmljb19pZCI6bnVsbCwiaWF0IjoxNzk1MDk3OTI5LCJleHAiOjE3OTUxMjY3Mjl9.7tLUsqMjcJV08qGq_zJtYiiZLyH8hY3xuYfBV2MN_tg
+@TOKEN_TECNICO = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwibm9tZSI6IkNhcmxvcyBQZXJlaXJhIiwiZW1haWwiOiJjYXJsb3MucGVyZWlyYUBoZWxwZGVzay5jb20iLCJwZXJmaWwiOiJURUNOSUNPIiwic29saWNpdGFudGVfaWQiOm51bGwsInRlY25pY29faWQiOjEsImlhdCI6MTc5NTA5Nzk1OCwiZXhwIjoxNzk1MTI2NzU4fQ.h4k8pgEeDd2PnsF--8om42eosbPaFPsM7jk-GAyMPz0
 
 ### Login ADMIN — esperado: 200 + token
 POST {{BASE}}/author/login
@@ -50,3 +53,117 @@ POST {{BASE}}/author/login
 Content-Type: application/json
 
 {}
+
+### ---------------------------------------------------------------
+### CADASTRO — SOLICITANTE (somente ADMIN)
+
+### Cadastrar SOLICITANTE sem token — esperado: 401
+POST {{BASE}}/solicitantes
+Content-Type: application/json
+
+{
+    "nome": "Maria Silva",
+    "email": "maria.silva@empresa.com",
+    "senha": "senha123",
+    "setor": "Financeiro"
+}
+
+### Cadastrar SOLICITANTE como ADMIN — esperado: 201
+POST {{BASE}}/solicitantes
+Content-Type: application/json
+Authorization: Bearer {{TOKEN_ADMIN}}
+
+{
+    "nome": "Maria Silva",
+    "email": "maria.silva@empresa.com",
+    "senha": "senha123",
+    "setor": "Financeiro"
+}
+
+### Cadastrar SOLICITANTE como SOLICITANTE — esperado: 403
+POST {{BASE}}/solicitantes
+Content-Type: application/json
+Authorization: Bearer {{TOKEN_SOLICITANTE}}
+
+{
+    "nome": "Maria Silva",
+    "email": "maria.silva@empresa.com",
+    "senha": "senha123",
+    "setor": "Financeiro"
+}
+
+### Cadastrar SOLICITANTE com e-mail duplicado — esperado: 400
+POST {{BASE}}/solicitantes
+Content-Type: application/json
+Authorization: Bearer {{TOKEN_ADMIN}}
+
+{
+    "nome": "Maria Silva",
+    "email": "ana.souza@empresa.com",
+    "senha": "senha123",
+    "setor": "Financeiro"
+}
+
+### Cadastrar SOLICITANTE sem campos obrigatórios — esperado: 400
+POST {{BASE}}/solicitantes
+Content-Type: application/json
+Authorization: Bearer {{TOKEN_ADMIN}}
+
+{
+    "nome": "Maria Silva"
+}
+
+### ---------------------------------------------------------------
+### CADASTRO — TECNICO (somente ADMIN)
+
+### Cadastrar TECNICO sem token — esperado: 401
+POST {{BASE}}/tecnicos
+Content-Type: application/json
+
+{
+    "nome": "Eduardo Santos",
+    "email": "eduardo.santos@helpdesk.com",
+    "senha": "senha123"
+}
+
+### Cadastrar TECNICO como ADMIN — esperado: 201
+POST {{BASE}}/tecnicos
+Content-Type: application/json
+Authorization: Bearer {{TOKEN_ADMIN}}
+
+{
+    "nome": "Eduardo Santos",
+    "email": "eduardo.santos@helpdesk.com",
+    "senha": "senha123"
+}
+
+### Cadastrar TECNICO como TECNICO — esperado: 403
+POST {{BASE}}/tecnicos
+Content-Type: application/json
+Authorization: Bearer {{TOKEN_TECNICO}}
+
+{
+    "nome": "Eduardo Santos",
+    "email": "eduardo.santos@helpdesk.com",
+    "senha": "senha123"
+}
+
+### Cadastrar TECNICO com e-mail duplicado — esperado: 400
+POST {{BASE}}/tecnicos
+Content-Type: application/json
+Authorization: Bearer {{TOKEN_ADMIN}}
+
+{
+    "nome": "Eduardo Santos",
+    "email": "carlos.pereira@helpdesk.com",
+    "senha": "senha123"
+}
+
+### Cadastrar TECNICO sem campos obrigatórios — esperado: 400
+POST {{BASE}}/tecnicos
+Content-Type: application/json
+Authorization: Bearer {{TOKEN_ADMIN}}
+
+{
+    "nome": "Eduardo Santos"
+}
