@@ -7,5 +7,6 @@ const router = express.Router();
 
 router.use(authMiddleware);
 router.get("/", authorize("TECNICO", "ADMIN"), tecnicoController.listarTecnicos);
+router.post("/", authorize("ADMIN"), tecnicoController.criar);
 
 module.exports = router;

@@ -9,6 +9,15 @@ class tecnicoController {
             next(error);
         }
     }
+
+    static async criar(req, res, next) {
+        try {
+            const tecnico = await tecnicoService.criar(req.body);
+            return res.status(201).json(tecnico);
+        } catch (error) {
+            next(error);
+        }
+    }
 }
 
 module.exports = tecnicoController;

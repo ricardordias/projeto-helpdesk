@@ -5,6 +5,7 @@ require("dotenv").config();
 const authRoutes = require("./routes/authRoute");
 const categoriasRoutes = require("./routes/categoriaRoute");
 const tecnicosRoutes = require("./routes/tecnicoRoute");
+const solicitantesRoutes = require("./routes/solicitanteRoute");
 const chamadosRoutes = require("./routes/chamadoRoute");
 const errorMiddleware = require("./middlewares/errorMiddleware");
 
@@ -15,6 +16,7 @@ app.use(express.json());
 app.use("/author", authRoutes); 
 app.use("/categorias", categoriasRoutes);
 app.use("/tecnicos", tecnicosRoutes);
+app.use("/solicitantes", solicitantesRoutes);
 app.use("/chamados", chamadosRoutes);
 
 // 404 — DEPOIS das rotas, ANTES do errorHandler
