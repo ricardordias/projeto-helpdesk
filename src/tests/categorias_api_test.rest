@@ -1,8 +1,9 @@
 @BASE = http://localhost:3000
-@TOKEN =
+@TOKEN = 
 
 ### Listar todas as categorias
 GET {{BASE}}/categorias
+Authorization: Bearer {{TOKEN}}
 
 ### Login para obter token
 POST {{BASE}}/author/login

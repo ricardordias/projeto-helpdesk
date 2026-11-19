@@ -2,10 +2,11 @@ const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
 
-const authRoutes = require("./routes/auth.routes");
-const categoriasRoutes = require("./routes/categorias.routes");
-const tecnicosRoutes = require("./routes/tecnicos.routes");
-const chamadosRoutes = require("./routes/chamados.routes");
+const authRoutes = require("./routes/authRoute");
+const categoriasRoutes = require("./routes/categoriaRoute");
+const tecnicosRoutes = require("./routes/tecnicoRoute");
+const chamadosRoutes = require("./routes/chamadoRoute");
+const errorMiddleware = require("./middlewares/errorMiddleware");
 
 const app = express();
 app.use(cors());
@@ -22,9 +23,6 @@ app.use((req, res) => {
 });
 
 // errorHandler — sempre por último
-app.use((err, req, res, next) => {
-    console.error(err);
-    res.status(err.status || 500).json({ erro: err.message || "Erro interno do servidor" });
-});
+app.use(errorMiddleware);
 
 module.exports = app;
